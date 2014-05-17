@@ -1,7 +1,9 @@
+library(ggplot2)
 shinyServer(function(input, output) {
-  output$txt1 = renderText({paste("You have selected", input$checkGroup)})
-  output$txt2 = renderText({paste("You have selected a range from",input$checkGroup[1])})
-  output$plt1 = renderPlot(plot(1:15,rx[,as.numeric(input$checkGroup)]))
+  #sel <- reactive(quote({input$checkGroup}),quoted=TRUE)
+  dat=reactive({subset(get2013dat,uniquecarrier %in% input$checkGroup)})
+  output$txt1 = renderText({paste(input$checkGroup)})
+  output$plt1 = renderPlot(print(qplot(as.factor(month),sampleavg,geom="line",group=uniquecarrier,color=uniquecarrier,,data=dat())))
   })
 
 
